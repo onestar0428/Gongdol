@@ -17,157 +17,24 @@
     <LinearLayout
         android:id="@+id/fortable"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/stack"
         android:background="#4979e9">
 
         <LinearLayout
+            android:id="@+id/time"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
             android:background="#093483"
-            android:layout_weight="0.5">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="9pt"
-                android:text=" " />
-            
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="8" />
+                android:text=" "
+                android:textSize="9pt" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="9" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="10" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="11" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="12" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="13" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="14" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="15" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="16" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="17" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="18" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="19" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="20" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="21" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="7pt"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:text="22" />
         </LinearLayout>
 
         <GridLayout
@@ -182,15 +49,10 @@
                 android:layout_height="wrap_content"
                 android:background="#093483"
                 android:text="Mon"
-                android:textStyle="bold"
                 android:textColor="#ffffff"
-                android:textSize="9pt" />
+                android:textSize="9pt"
+                android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:text="test"
-                android:textSize="9pt" />
         </GridLayout>
 
         <GridLayout
@@ -206,8 +68,8 @@
                 android:background="#093483"
                 android:text="Tue"
                 android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:textSize="9pt" />
+                android:textSize="9pt"
+                android:textStyle="bold" />
         </GridLayout>
 
         <GridLayout
@@ -223,12 +85,12 @@
                 android:background="#093483"
                 android:text="Wed"
                 android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:textSize="9pt" />
+                android:textSize="9pt"
+                android:textStyle="bold" />
         </GridLayout>
 
         <GridLayout
-            android:id="@+id/Thuseday"
+            android:id="@+id/thursday"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -240,8 +102,8 @@
                 android:background="#093483"
                 android:text="Thu"
                 android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:textSize="9pt" />
+                android:textSize="9pt"
+                android:textStyle="bold" />
         </GridLayout>
 
         <GridLayout
@@ -257,8 +119,8 @@
                 android:background="#093483"
                 android:text="Fri"
                 android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:textSize="9pt" />
+                android:textSize="9pt"
+                android:textStyle="bold" />
         </GridLayout>
 
     </LinearLayout>
