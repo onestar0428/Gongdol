@@ -3,11 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.ckc.schedule.schedule">
+    tools:context="com.example.jy.gongdol.MainActivity">
 
     <Button
         android:id="@+id/stack"
@@ -18,371 +14,227 @@
         android:text="my"
         android:textSize="9pt" />
 
-    <TableLayout
+    <LinearLayout
+        android:id="@+id/fortable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/stack">
-
-        <TableRow>
-
-            <TextView
-                android:gravity="center"
-                android:text="   " />
-
-            <TextView
-                android:id="@+id/a0"
-                android:gravity="center"
-                android:text="  월요일  " />
-
-            <TextView
-                android:id="@+id/b0"
-                android:gravity="center"
-                android:text="  화요일  " />
-
-            <TextView
-                android:id="@+id/c0"
-                android:gravity="center"
-                android:text="  수요일  " />
-
-            <TextView
-                android:id="@+id/d0"
-                android:gravity="center"
-                android:text="  목요일  " />
-
-            <TextView
-                android:id="@+id/e0"
-                android:gravity="center"
-                android:text="  금요일  " />
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:gravity="center"
-                android:text=" 1교시 \n  9:00  \n" />
-
-            <TextView
-                android:id="@+id/a1"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/b1"
-                android:gravity="center"
-                android:text="  건축 " />
-
-            <TextView
-                android:id="@+id/c1"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/d1"
-                android:gravity="center"
-                android:text="자료구조" />
-
-            <TextView
-                android:id="@+id/e1"
-                android:gravity="center"
-                android:text="  소프트 \n 웨어 " />
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:gravity="center"
-                android:text=" 2교시 \n  10:00  \n" />
-
-            <TextView
-                android:id="@+id/a2"
-                android:gravity="center"
-                android:text=" 모바일" />
-
-            <TextView
-                android:id="@+id/b2"
-                android:gravity="center"
-                android:text=" 문화사  " />
-
-            <TextView
-                android:id="@+id/c2"
-                android:gravity="center"
-                android:text=" 모바일" />
-
-            <TextView
-                android:id="@+id/d2"
-                android:gravity="center"
-                android:text="자료구조" />
-
-            <TextView
-                android:id="@+id/e2"
-                android:gravity="center"
-                android:text="  공학  " />
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:gravity="center"
-                android:text=" 3교시 \n  11:00  \n" />
-
-            <TextView
-                android:id="@+id/a3"
-                android:gravity="center"
-                android:text=" 프로\n그래밍" />
-
-            <TextView
-                android:id="@+id/b3"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/c3"
-                android:gravity="center"
-                android:text="  프로\n그래밍" />
-
-            <TextView
-                android:id="@+id/d3"
-                android:gravity="center"
-                android:text=" 자료구조 " />
-
-            <TextView
-                android:id="@+id/e3"
-                android:gravity="center"
-                android:text="  소프트\n웨어  " />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:gravity="center"
-                android:text=" 4교시 \n  12:00  \n" />
-
-            <TextView
-                android:id="@+id/a4"
-                android:gravity="center"
-                android:text=" " />
-
-            <TextView
-                android:id="@+id/b4"
-                android:gravity="center"
-                android:text="  컴퓨터 \n그래픽스  " />
-
-            <TextView
-                android:id="@+id/c4"
-                android:gravity="center"
-                android:text=" " />
-
-            <TextView
-                android:id="@+id/d4"
-                android:gravity="center"
-                android:text="  자료구조  " />
-
-            <TextView
-                android:id="@+id/e4"
-                android:gravity="center"
-                android:text="  공학  " />
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:gravity="center"
-                android:text=" 5교시 \n  13:00  \n" />
-
-            <TextView
-                android:id="@+id/a5"
-                android:gravity="center"
-                android:text=" " />
-
-            <TextView
-                android:id="@+id/b5"
-                android:gravity="center"
-                android:text="  컴퓨터 \n그래픽스  " />
-
-            <TextView
-                android:id="@+id/c5"
-                android:gravity="center"
-                android:text=" " />
-
-            <TextView
-                android:id="@+id/d5"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/e5"
-                android:gravity="center"
-                android:text="    " />
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:gravity="center"
-                android:text=" 6교시 \n  14:00  \n" />
-
-            <TextView
-                android:id="@+id/a6"
-                android:gravity="center"
-                android:text=" " />
-
-            <TextView
-                android:id="@+id/b6"
-                android:gravity="center"
-                android:text="  컴퓨터 \n그래픽스  " />
-
-            <TextView
-                android:id="@+id/c6"
-                android:gravity="center"
-                android:text=" " />
-
-            <TextView
-                android:id="@+id/d6"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/e6"
-                android:gravity="center"
-                android:text="    " />
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:gravity="center"
-                android:text=" 7교시 \n  15:00  \n" />
-
-            <TextView
-                android:id="@+id/a7"
-                android:gravity="center"
-                android:text=" 경영학 \n 원론" />
-
-            <TextView
-                android:id="@+id/b7"
-                android:gravity="center"
-                android:text="  컴퓨터 \n그래픽스  " />
-
-            <TextView
-                android:id="@+id/c7"
-                android:gravity="center"
-                android:text=" " />
-
-            <TextView
-                android:id="@+id/d7"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/e7"
-                android:gravity="center"
-                android:text="    " />
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:gravity="center"
-                android:text=" 8교시 \n  16:00  \n" />
-
-            <TextView
-                android:id="@+id/a8"
-                android:gravity="center"
-                android:text=" 경영학 \n 원론" />
-
-            <TextView
-                android:id="@+id/b8"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/c8"
-                android:gravity="center"
-                android:text="소프트 \n 웨어" />
-
-            <TextView
-                android:id="@+id/d8"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/e8"
-                android:gravity="center"
-                android:text="    " />
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:gravity="center"
-                android:text=" 9교시 \n  17:00  \n" />
-
-            <TextView
-                android:id="@+id/a9"
-                android:gravity="center"
-                android:text=" 경영학 \n 원론" />
-
-            <TextView
-                android:id="@+id/b9"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/c9"
-                android:gravity="center"
-                android:text="산업" />
-
-            <TextView
-                android:id="@+id/d9"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/e9"
-                android:gravity="center"
-                android:text="    " />
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:gravity="center"
-                android:text=" 10교시 \n  18:00  \n" />
-
-            <TextView
-                android:id="@+id/a10"
-                android:gravity="center"
-                android:text=" " />
-
-            <TextView
-                android:id="@+id/b10"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/c10"
-                android:gravity="center"
-                android:text="세미나" />
-
-            <TextView
-                android:id="@+id/d10"
-                android:gravity="center"
-                android:text="    " />
-
-            <TextView
-                android:id="@+id/e10"
-                android:gravity="center"
-                android:text="    " />
-
-        </TableRow>
-    </TableLayout>
+        android:layout_below="@id/stack"
+        android:background="#4979e9">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="#093483"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" "
+                android:textSize="9pt" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="8"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="9"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="10"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="11"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="12"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="13"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="14"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="15"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="16"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="17"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="18"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="19"
+                android:textColor="#ffffff"
+                android:textSize="7pt"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <GridLayout
+            android:id="@+id/monday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#093483"
+                android:text="Mon"
+                android:textColor="#ffffff"
+                android:textSize="9pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/s1"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:text="test"
+                android:textSize="9pt" />
+        </GridLayout>
+
+        <GridLayout
+            android:id="@+id/tuesday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#093483"
+                android:text="Tue"
+                android:textColor="#ffffff"
+                android:textSize="9pt"
+                android:textStyle="bold" />
+        </GridLayout>
+
+        <GridLayout
+            android:id="@+id/wednesday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#093483"
+                android:text="Wed"
+                android:textColor="#ffffff"
+                android:textSize="9pt"
+                android:textStyle="bold" />
+        </GridLayout>
+
+        <GridLayout
+            android:id="@+id/Thuseday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#093483"
+                android:text="Thu"
+                android:textColor="#ffffff"
+                android:textSize="9pt"
+                android:textStyle="bold" />
+        </GridLayout>
+
+        <GridLayout
+            android:id="@+id/friday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#093483"
+                android:text="Fri"
+                android:textColor="#ffffff"
+                android:textSize="9pt"
+                android:textStyle="bold" />
+        </GridLayout>
+
+    </LinearLayout>
 </RelativeLayout>
