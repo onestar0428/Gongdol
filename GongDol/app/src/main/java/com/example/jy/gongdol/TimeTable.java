@@ -13,8 +13,12 @@ public class TimeTable {
     String classroom;
 
     String day="";
+    String room="";
+    String building="";
     int start=800;
     int end=800;
+    int start_o=800;
+    int end_o=800;
 
     int classTime_num[][] = {{900, 950}, {1000, 1050}, {1100, 1150}, {1200, 1250}, {1300, 1350}, {1400, 1450}, {1500, 1550},
             {1600, 1650}, {1700, 1750}, {1800, 1850}, {1900, 1950}, {2000, 2150}, {2100, 2150}, {2200, 2250}};//[교시][시작, 끝]
@@ -41,13 +45,12 @@ public class TimeTable {
 
             if (s.equals("A") || s.equals("B") || s.equals("C") || s.equals("D") || s.equals("E")) {
                 char c = s.charAt(0);
-                if (c > max_a)//string 비교 다시
+                if (c > max_a)
                     max_a = c;
                 if (c < min_n)
                     min_a = c;
                 flag = 1;
             } else {
-
                 if (Integer.parseInt(s) > max_n)
                     max_n = Integer.parseInt(s);
                 if (Integer.parseInt(s) < min_n)
@@ -62,7 +65,9 @@ public class TimeTable {
     }
 
     public void splitClassroom(String c) {
-
+        String arr[] = c.split("-");
+        building = arr[0];
+        room = arr[1];
     }
 
     //transform format of data from database for using it in drawing timetable
@@ -112,6 +117,8 @@ public class TimeTable {
         }
         setStart(s);
         setEnd(e);
+        setStart_Origin(s);
+        setEnd_Origin(e);
     }
 
     //setter
@@ -134,6 +141,7 @@ public class TimeTable {
 
     public void setClassroom(String c) {
         classroom = c;
+        splitClassroom(c);
     }
 
     public void setDay(String d){
@@ -141,13 +149,17 @@ public class TimeTable {
     }
     //=========================================
     public void setStart(int s) {
-        s = (s/100*100) + (s%100 * 100 / 60);
-        start = s;
+        start = (s/100*100) + (s%100 * 100 / 60);
     }
 
     public void setEnd(int e) {
-        e = (e/100*100) + (e%100 * 100 / 60);
-        end = e;
+        end = (e/100*100) + (e%100 * 100 / 60);
+    }
+    public void setStart_Origin(int s) {
+        start_o = s;
+    }
+    public void setEnd_Origin(int e) {
+        end_o = e;
     }
 
     //getter
@@ -170,4 +182,10 @@ public class TimeTable {
     public String getClassroom() {
         return classroom;
     }
+
+    public int getEnd_Origin(){
+        return end_o;
+    }
+    public String getBuilding(){return building;}
+    public String getRoom(){return room;}
 }
