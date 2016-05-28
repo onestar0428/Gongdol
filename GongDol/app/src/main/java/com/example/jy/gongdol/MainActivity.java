@@ -1,11 +1,13 @@
 package com.example.jy.gongdol;
 
 import android.app.ActionBar;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
@@ -18,21 +20,14 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    String[][] db = {{"Subject 6", "1700", "2000", "Mon", "413"}, {"Subject 1", "1300", "1450", "Mon", "413"},{"Subject 3", "1700", "1750", "Wed", "413"},
-            {"Subject 4", "1330", "1550", "Thu", "413"}, {"Subject 3", "1700", "1750", "Tue", "413"}, {"Subject 2", "1000", "1400", "Tue", "412"},
-            {"Subject 5", "1215", "1745", "Fri", "412"}, {"Subject 7", "1115", "1345", "Wed", "413"}};
-    ArrayList<TimeTable> tt = new ArrayList<TimeTable>(); // list for data from db
+    ClassroomDB db;
+
+    ArrayList<TimeTable> tt = new ArrayList<TimeTable>(); // list for data from data
     TextView[] table;//textview array for subjects
     TextView[] time;
     int latest = 1700; //initialize latest time
     static int earliest = 800;
     int hourHeight;
-
-    static String Monday = "Mon";
-    static String Tuesday = "Tue";
-    static String Wednesday = "Wed";
-    static String Thursday = "Thu";
-    static String Friday = "Fri";
 
     LinearLayout.LayoutParams l;
     LinearLayout linearForTime;
@@ -52,16 +47,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         layoutThu = (GridLayout) findViewById(R.id.thursday);
         layoutFri = (GridLayout) findViewById(R.id.friday);
 
+        db = new ClassroomDB(this);
         initArrayList();
         setFirstRow();
     }
+
     //this overrides onWindowFocusChanged method for getting height from not-yet-laid-out object
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
         // the height will be set at this point
-        hourHeight = (linearForTime.getMeasuredHeight())/time.length;
+        hourHeight = (linearForTime.getMeasuredHeight()) / time.length;
         hourHeight = time[0].getMeasuredHeight();
         makeTable();
         //Toast.makeText(getApplicationContext(), hourHeight + " " + linearForTime.getMeasuredHeight() + " " + time[0].getMeasuredHeight(), Toast.LENGTH_SHORT).show();
@@ -69,18 +66,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //Temporary class for inputting tables
     public void initArrayList() {
-        for (int i = 0; i < db.length; i++) {
-            TimeTable t = new TimeTable();
-            t.setSubject(db[i][0]);
-            t.setStart(Integer.parseInt(db[i][1]));
-            t.setEnd(Integer.parseInt(db[i][2]));
-            t.setDay(db[i][3]);
-            t.setClassroom(db[i][4]);
-            tt.add(t);
+        db.open();
+        db.init();
+        Cursor c = db.getAllClassrooms();
+        if (c.moveToFirst()) {
+            do {
+                TimeTable t = new TimeTable();
+                t.setCourseId(c.getInt(0));
+                t.setSubject(c.getString(1));
+                t.setProf(c.getString(2));
+                t.setClassroom(c.getString(4));
+                checkingDate(t, c);
+                tt.add(t);
 
-            checkLatestTime(t.getEnd());
+                checkLatestTime(t.getEnd());
+            } while (c.moveToNext());
         }
+        db.close();
         arraySort();
+    }
+
+    public void checkingDate(TimeTable cur, Cursor cur_c) {
+        String timeString = cur_c.getString(3);
+        String arr[] = timeString.split(" ,");
+        String date = arr[0].substring(0, 1);
+        int[] point = new int[3];
+        int c=0;
+
+        //한 요일만 있을때 setTime을 아직 안해줬다
+        cur.setDay(date);
+
+        point[c++] = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (!arr[i].substring(0, 1).equals(date)) {
+                date = arr[i].substring(0, 1);
+                point[c++]=timeString.indexOf(arr[i].substring(0,1));
+            }
+        }
+        point[c] = timeString.length();
+
+        cur.setTime(timeString.substring(point[0], point[1]));
+
+        for(int i=1; i<c; i++){
+            if(point[i]!=0) {
+                TimeTable new_t = cur;
+                new_t.setDay(arr[i].substring(0, 1));
+                new_t.setTime(timeString.substring(point[i], point[i+1]));
+                tt.add(new_t);
+
+                checkLatestTime(new_t.getEnd());
+            }
+        }
     }
 
     //sorting arraylist in order of starting time
@@ -106,18 +142,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //find max value for creating first row of timetable
     public void checkLatestTime(int endTime) {
-        if (endTime  > latest)
+        if (endTime > latest)
             latest = endTime + 100;
     }
 
     //creating first row
     public void setFirstRow() {
-        time = new TextView[(latest - earliest)/100 + 1];
+        time = new TextView[(latest - earliest) / 100 + 1];
         l = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, hourHeight, 1);
 
         for (int i = 0; i < time.length; i++) {
             time[i] = new TextView(this);
-            time[i].setText((earliest/100 + i) + "");
+            time[i].setText((earliest / 100 + i) + "");
             time[i].setTextColor(Color.WHITE);
             linearForTime.addView(time[i], l);
         }
@@ -128,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayout.LayoutParams lForBlank;
         TextView blank; // blank between subjects
         table = new TextView[tt.size()];
-        int[] start = {earliest, earliest,earliest,earliest, earliest};
+        int[] start = {earliest, earliest, earliest, earliest, earliest};
         //hourHeight = time[0].getHeight()/((latest - earliest)/100 + 1);
 
         for (int i = 0; i < tt.size(); i++) {
@@ -137,13 +173,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             table[i].setBackgroundColor(Color.WHITE);
             table[i].setOnClickListener(this);
 
-            int hour = ((tt.get(i).getEnd() - tt.get(i).getStart()))/ 100 * hourHeight;
+            int hour = ((tt.get(i).getEnd() - tt.get(i).getStart())) / 100 * hourHeight;
             int minute = ((tt.get(i).getEnd() - tt.get(i).getStart())) % 100 * hourHeight / 100;
             l = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, hour + minute);
 
             //calculating location and height of each subject
             switch (tt.get(i).getDay()) {
-                case "Mon":
+                case "월":
                     lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                             ((tt.get(i).getStart() - start[0]) / 100 * hourHeight) + (tt.get(i).getStart() - start[0]) % 100 * hourHeight / 100);
                     blank = new TextView(this);
@@ -151,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     layoutMon.addView(table[i], l);
                     start[0] = tt.get(i).getEnd();
                     break;
-                case "Tue":
+                case "화":
                     lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                             ((tt.get(i).getStart() - start[1]) / 100 * hourHeight) + (tt.get(i).getStart() - start[1]) % 100 * hourHeight / 100);
                     blank = new TextView(this);
@@ -159,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     layoutTue.addView(table[i], l);
                     start[1] = tt.get(i).getEnd();
                     break;
-                case "Wed":
+                case "수":
                     lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                             ((tt.get(i).getStart() - start[2]) / 100 * hourHeight) + (tt.get(i).getStart() - start[2]) % 100 * hourHeight / 100);
                     blank = new TextView(this);
@@ -167,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     layoutWed.addView(table[i], l);
                     start[2] = tt.get(i).getEnd();
                     break;
-                case "Thu":
+                case "목":
                     lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                             ((tt.get(i).getStart() - start[3]) / 100) * hourHeight + (tt.get(i).getStart() - start[3]) % 100 * hourHeight / 100);
                     blank = new TextView(this);
@@ -175,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     layoutThu.addView(table[i], l);
                     start[3] = tt.get(i).getEnd();
                     break;
-                case "Fri":
+                case "금":
                     lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                             ((tt.get(i).getStart() - start[4]) / 100 * hourHeight) + (tt.get(i).getStart() - start[4]) % 100 * hourHeight / 100);
                     blank = new TextView(this);
