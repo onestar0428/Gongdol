@@ -17,8 +17,6 @@ public class TimeTable {
     String building="";
     int start=800;
     int end=800;
-    int start_o=800;
-    int end_o=800;
 
     int classTime_num[][] = {{900, 950}, {1000, 1050}, {1100, 1150}, {1200, 1250}, {1300, 1350}, {1400, 1450}, {1500, 1550},
             {1600, 1650}, {1700, 1750}, {1800, 1850}, {1900, 1950}, {2000, 2150}, {2100, 2150}, {2200, 2250}};//[교시][시작, 끝]
@@ -36,8 +34,8 @@ public class TimeTable {
     //parsing time and classroom information
     public void splitTime(String t) {
         String temp[] = t.split(" ,");
-        int max_n = 0, min_n = 10000;
-        char max_a = 'F', min_a = 'A';
+        int max_n = 0, min_n = 100000;
+        char max_a = 'A', min_a = 'F';
         int flag = 0;//0 for numbers and 1 for alphabets
 
         for (int i = 0; i < temp.length; i++) {
@@ -45,12 +43,14 @@ public class TimeTable {
 
             if (s.equals("A") || s.equals("B") || s.equals("C") || s.equals("D") || s.equals("E")) {
                 char c = s.charAt(0);
+                Log.w("C", c+"");
                 if (c > max_a)
                     max_a = c;
                 if (c < min_n)
                     min_a = c;
                 flag = 1;
             } else {
+                Log.w("CN", Integer.parseInt(s)  + "");
                 if (Integer.parseInt(s) > max_n)
                     max_n = Integer.parseInt(s);
                 if (Integer.parseInt(s) < min_n)
@@ -59,15 +59,15 @@ public class TimeTable {
 
         }
         if (flag == 1)
-            transformTimeForAlpahbet(max_a, min_a);
+            transformTimeForAlphabet(min_a, max_a);
         else
-            transformTimeForNumber(max_n, min_n);
+            transformTimeForNumber(min_n-1, max_n-1);
     }
 
     public void splitClassroom(String c) {
         String arr[] = c.split("-");
-        building = arr[0];
-        room = arr[1];
+        setBuilding(arr[0]);
+        setRoom(arr[1]);
     }
 
     //transform format of data from database for using it in drawing timetable
@@ -78,7 +78,7 @@ public class TimeTable {
         setEnd(e);
     }
 
-    public void transformTimeForAlpahbet(char startT, char endT) {
+    public void transformTimeForAlphabet(char startT, char endT) {
         int s = 0, e = 0;
         //교시마다의 시간을 받아와서 시작시간 종료시간 설정
         switch (startT) {
@@ -100,25 +100,23 @@ public class TimeTable {
         }
         switch (endT) {
             case 'A':
-                s = classTime_alpha[0][1];
+                e = classTime_alpha[0][1];
                 break;
             case 'B':
-                s = classTime_alpha[1][1];
+                e = classTime_alpha[1][1];
                 break;
             case 'C':
-                s = classTime_alpha[2][1];
+                e = classTime_alpha[2][1];
                 break;
             case 'D':
-                s = classTime_alpha[3][1];
+                e = classTime_alpha[3][1];
                 break;
             case 'E':
-                s = classTime_alpha[4][1];
+                e = classTime_alpha[4][1];
                 break;
         }
         setStart(s);
         setEnd(e);
-        setStart_Origin(s);
-        setEnd_Origin(e);
     }
 
     //setter
@@ -147,7 +145,12 @@ public class TimeTable {
     public void setDay(String d){
         day = d;
     }
-    //=========================================
+    public void setBuilding(String b){
+        building = b;
+    }
+    public void setRoom(String r){
+        room = r;
+    }
     public void setStart(int s) {
         start = (s/100*100) + (s%100 * 100 / 60);
     }
@@ -155,17 +158,25 @@ public class TimeTable {
     public void setEnd(int e) {
         end = (e/100*100) + (e%100 * 100 / 60);
     }
-    public void setStart_Origin(int s) {
-        start_o = s;
-    }
-    public void setEnd_Origin(int e) {
-        end_o = e;
-    }
 
     //getter
+
+    public int getCourseID(){return courseID;}
     public String getSubject() {
         return subject;
     }
+
+    public String getProf(){return prof;}
+
+    public String getClassroom() {
+        return classroom;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public String getTime(){ return time;}
 
     public int getStart() {
         return start;
@@ -175,17 +186,4 @@ public class TimeTable {
         return end;
     }
 
-    public String getDay() {
-        return day;
-    }
-
-    public String getClassroom() {
-        return classroom;
-    }
-
-    public int getEnd_Origin(){
-        return end_o;
-    }
-    public String getBuilding(){return building;}
-    public String getRoom(){return room;}
 }

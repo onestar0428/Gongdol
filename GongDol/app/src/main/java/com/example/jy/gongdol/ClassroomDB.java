@@ -22,8 +22,8 @@ public class ClassroomDB {
     static final String prof="Prof";
     static final String time = "Time";//강의시간
     static final String classroom = "Classroom";//강의실 호수
-    static final String DATABASE_CREATE = "CREATE TABLE ClassroomInfo (_id INTEGER, Subject VARCHAR(20), Prof VARCHAR(10), Time VARCHAR(20), Classroom VARCHAR(20));";
-    static final int DATABASE_VERSION = 1;
+    static final String DATABASE_CREATE = "CREATE TABLE IF NOT EXISTS ClassroomInfo (_id INTEGER, Subject VARCHAR(20), Prof VARCHAR(10), Time VARCHAR(20), Classroom VARCHAR(20));";
+    static final int DATABASE_VERSION = 2;
 
     final Context context;
     DatabaseHelper DBHelper;
@@ -59,7 +59,7 @@ public class ClassroomDB {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
 
-            db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS ClassroomInfo");
 
             //db.execSQL("DROP VIEW IF EXISTS "+viewEmps);
             onCreate(db);
@@ -90,7 +90,7 @@ public class ClassroomDB {
         initialValues.put(prof, p);
         initialValues.put(time, t);;
         initialValues.put(classroom, c);
-        return db.insert(DATABASE_TABLE, null, initialValues);
+        return db.insertWithOnConflict(DATABASE_TABLE, null, initialValues, DATABASE_VERSION);
     }
     // ---deletes a particular Classroom---
     public boolean deleteClassroom(String rowId) {

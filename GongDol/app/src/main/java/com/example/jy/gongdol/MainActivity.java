@@ -75,12 +75,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 t.setCourseId(c.getInt(0));
                 t.setSubject(c.getString(1));
                 t.setProf(c.getString(2));
+                t.setTime(c.getString(3));
                 t.setClassroom(c.getString(4));
                 checkingDate(t, c);
                 tt.add(t);
 
-                checkLatestTime(t.getEnd());
             } while (c.moveToNext());
+        }
+
+        checkLatestTime();
+        //display arraylist values
+        for(TimeTable e: tt){
+            Log.w("TT", e.getSubject() + " " + e.getStart() + " " + e.getEnd() + " " + e.getDay() + " ");
         }
         db.close();
         arraySort();
@@ -90,31 +96,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String timeString = cur_c.getString(3);
         String arr[] = timeString.split(" ,");
         String date = arr[0].substring(0, 1);
-        int[] point = new int[3];
-        int c=0;
 
-        //한 요일만 있을때 setTime을 아직 안해줬다
         cur.setDay(date);
 
-        point[c++] = 0;
+        //월1, 화2, 수3 형식일 때, 요일 별로 string 쪼개서 새 객체 생성한 뒤 저장
         for (int i = 0; i < arr.length; i++) {
-            if (!arr[i].substring(0, 1).equals(date)) {
-                date = arr[i].substring(0, 1);
-                point[c++]=timeString.indexOf(arr[i].substring(0,1));
-            }
-        }
-        point[c] = timeString.length();
+            if (!arr[i].substring(0,1).equals(date)) {//월1, 화2처럼 다를떄
+                cur.setTime(timeString.substring(0, timeString.indexOf(arr[i].substring(0,1))));//original 객체에 월1 저장
+                timeString = timeString.substring(timeString.indexOf(arr[i].substring(0, 1)), timeString.length());//회2, 수3으로 저장
+                date = arr[i].substring(0, 1);//새로운 요일 값으로 설정->화
 
-        cur.setTime(timeString.substring(point[0], point[1]));
+                TimeTable new_t = new TimeTable();
+                new_t.setCourseId(cur.getCourseID());
+                new_t.setSubject(cur.getSubject());
+                new_t.setProf(cur.getProf());
+                new_t.setClassroom(cur.getClassroom());
 
-        for(int i=1; i<c; i++){
-            if(point[i]!=0) {
-                TimeTable new_t = cur;
-                new_t.setDay(arr[i].substring(0, 1));
-                new_t.setTime(timeString.substring(point[i], point[i+1]));
+                new_t.setDay(date);
+                new_t.setTime(timeString);
                 tt.add(new_t);
 
-                checkLatestTime(new_t.getEnd());
+                cur = new_t;
             }
         }
     }
@@ -141,9 +143,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //find max value for creating first row of timetable
-    public void checkLatestTime(int endTime) {
-        if (endTime > latest)
-            latest = endTime + 100;
+    public void checkLatestTime() {
+
+        for(TimeTable e: tt) {
+            if (e.getEnd() > latest)
+                latest = e.getEnd() + 100;
+        }
+        Log.w("TAG", latest+"");
     }
 
     //creating first row
