@@ -22,19 +22,13 @@ import java.util.Comparator;
 
 public class mySchedule extends AppCompatActivity {
     ClassroomDB db;
-    ArrayList<TimeTable> tt = new ArrayList<TimeTable>(); // list for data from db
-    String[][] classtime = new String[10][4];
+
+    ArrayList<TimeTable> mtt = new ArrayList<TimeTable>(); // list for data from data
     TextView[] table;//textview array for subjects
     TextView[] time;
     int latest = 1700; //initialize latest time
-    int earliest = 800;
+    static int earliest = 800;
     int hourHeight;
-
-    static String Monday = "Mon";
-    static String Tuesday = "Tue";
-    static String Wednesday = "Wed";
-    static String Thursday = "Thu";
-    static String Friday = "Fri";
 
     LinearLayout.LayoutParams l;
     LinearLayout linearForTime;
@@ -77,53 +71,62 @@ public class mySchedule extends AppCompatActivity {
         // the height will be set at this point
         hourHeight = (linearForTime.getMeasuredHeight()) / time.length;
         hourHeight = time[0].getMeasuredHeight();
-        makeTable();
         //Toast.makeText(getApplicationContext(), hourHeight + " " + linearForTime.getMeasuredHeight() + " " + time[0].getMeasuredHeight(), Toast.LENGTH_SHORT).show();
     }
 
     //Temporary class for inputting tables
     public void initArrayList() {
-        String[][] s = {{"6440001", "자료구조및실습 (원어강의)", "김원", "목1 ,목2 ,목3 ,목4", "IT대학-601"},
-                {"9392001", "이산수학 (원어강의) ", "최재혁", "월E ,금D", "IT대학-412"},
-                {"9656002", "웹프로그래밍 (원어강의)", "정옥란", "화2 ,화3 ,목2 ,목3", "IT대학-413"},
-                {"11672001", "컴퓨터프로그래밍 (원어강의)", "최아영", "화2 ,화3 ,목2 ,목3", "IT대학-412"}};
-        int i=0;
-
         db.open();
         Cursor c = db.getAllClassrooms();
         if (c.moveToFirst()) {
             do {
-                Log.w("TAG_check", c.getString(0));
-            } while (c.moveToNext());
-        }
-        db.close();
-
-        db.open();
-        for(i=0; i<s.length; i++){
-            long l = db.insertClassroom(s[i][0], s[i][1], s[i][2], s[i][3], s[i][4]);
-            //classtime[i][] = s[i][3].split(",");
-            //checkLatestTime(Integer.parseInt(s[i][3]));
-        }
-        db.close();
-
-        db.open();
-        //Cursor c = db.getAllClassrooms();
-        if (c.moveToFirst()) {
-            do {
                 TimeTable t = new TimeTable();
+                t.setCourseId(c.getInt(0));
                 t.setSubject(c.getString(1));
-                t.setStart(Integer.parseInt(c.getString(2)));
-                t.setEnd(Integer.parseInt(c.getString(3)));
-                t.setDay(c.getString(4));
-                t.setClassroom(c.getString(5));
-                tt.add(t);
+                t.setProf(c.getString(2));
+                t.setTime(c.getString(3));
+                t.setClassroom(c.getString(4));
+                checkingDate(t, c);
+                mtt.add(t);
             } while (c.moveToNext());
         }
-        db.close();
 
+        checkLatestTime();
+        //display arraylist values
+        for(TimeTable e: mtt){
+            Log.w("TT", e.getSubject() + " " + e.getStart() + " " + e.getEnd() + " " + e.getDay() + " ");
+        }
+        db.close();
         arraySort();
     }
+    public void checkingDate(TimeTable cur, Cursor cur_c) {
+        String timeString = cur_c.getString(3);
+        String arr[] = timeString.split(" ,");
+        String date = arr[0].substring(0, 1);
 
+        cur.setDay(date);
+
+        //월1, 화2, 수3 형식일 때, 요일 별로 string 쪼개서 새 객체 생성한 뒤 저장
+        for (int i = 0; i < arr.length; i++) {
+            if (!arr[i].substring(0,1).equals(date)) {//월1, 화2처럼 다를떄
+                cur.setTime(timeString.substring(0, timeString.indexOf(arr[i].substring(0,1))));//original 객체에 월1 저장
+                timeString = timeString.substring(timeString.indexOf(arr[i].substring(0, 1)), timeString.length());//회2, 수3으로 저장
+                date = arr[i].substring(0, 1);//새로운 요일 값으로 설정->화
+
+                TimeTable new_t = new TimeTable();
+                new_t.setCourseId(cur.getCourseID());
+                new_t.setSubject(cur.getSubject());
+                new_t.setProf(cur.getProf());
+                new_t.setClassroom(cur.getClassroom());
+
+                new_t.setDay(date);
+                new_t.setTime(timeString);
+                mtt.add(new_t);
+
+                cur = new_t;
+            }
+        }
+    }
     //sorting arraylist in order of starting time
     public void arraySort() {
         Comparator<TimeTable> comp = new Comparator<TimeTable>() {
@@ -133,22 +136,18 @@ public class mySchedule extends AppCompatActivity {
             }
 
         };
-        Collections.sort(tt, comp);
-
-        //checking order of arraylist<timetable>
-        /*
-        String str = "";
-        for(int i=0; i<tt.size(); i++) {
-            str += tt.get(i).getSubject();
-        }
-        Toast.makeText(getApplicationContext(),str, Toast.LENGTH_LONG).show();
-        */
+        Collections.sort(mtt, comp);
     }
 
     //find max value for creating first row of timetable
-    public void checkLatestTime(int endTime) {
-        if (endTime > latest)
-            latest = endTime + 100;
+    public void checkLatestTime() {
+
+        for(TimeTable e: mtt) {
+            if (e.getEnd() > latest) {
+                latest = e.getEnd() + 100;
+                setFirstRow();
+            }
+        }
     }
 
     //creating first row
@@ -156,7 +155,8 @@ public class mySchedule extends AppCompatActivity {
         time = new TextView[(latest - earliest) / 100 + 1];
         l = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, hourHeight, 1);
 
-        for (int i = 0; i < time.length-1; i++) {
+        Log.w("t", time.length+"");
+        for (int i = 0; i < time.length; i++) {
             time[i] = new TextView(this);
             time[i].setText((earliest / 100 + i) + "");
             time[i].setTextColor(Color.WHITE);
@@ -168,70 +168,87 @@ public class mySchedule extends AppCompatActivity {
     public void makeTable() {
         LinearLayout.LayoutParams lForBlank;
         TextView blank; // blank between subjects
-        table = new TextView[tt.size()];
+        table = new TextView[mtt.size()];
         int[] start = {earliest, earliest, earliest, earliest, earliest};
         //hourHeight = time[0].getHeight()/((latest - earliest)/100 + 1);
 
-        for (int i = 0; i < tt.size(); i++) {
+        for (int i = 0; i < mtt.size(); i++) {
             table[i] = new TextView(this);
-            table[i].setText(tt.get(i).getSubject() + "\n" + tt.get(i).getClassroom());
+            table[i].setText(mtt.get(i).getSubject() + "\n" + mtt.get(i).getClassroom());
             table[i].setBackgroundColor(Color.WHITE);
-            //table[i].setOnClickListener(this);
 
-            int hour = ((tt.get(i).getEnd() - tt.get(i).getStart())) / 100 * hourHeight;
-            int minute = ((tt.get(i).getEnd() - tt.get(i).getStart())) % 100 * hourHeight / 100;
+            int hour = ((mtt.get(i).getEnd() - mtt.get(i).getStart())) / 100 * hourHeight;
+            int minute = ((mtt.get(i).getEnd() - mtt.get(i).getStart())) % 100 * hourHeight / 100;
             l = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, hour + minute);
 
             //calculating location and height of each subject
-            switch (tt.get(i).getDay()) {
-                case "Mon":
-                    lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            ((tt.get(i).getStart() - start[0]) / 100 * hourHeight) + (tt.get(i).getStart() - start[0]) % 100 * hourHeight / 100);
-                    blank = new TextView(this);
-                    layoutMon.addView(blank, lForBlank);
-                    layoutMon.addView(table[i], l);
-                    start[0] = tt.get(i).getEnd();
+            switch (mtt.get(i).getDay()) {
+                case "월":
+                    if(mtt.get(i).getStart() >=  start[0]) {
+                        lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                ((mtt.get(i).getStart() - start[0]) / 100 * hourHeight) + (mtt.get(i).getStart() - start[0]) % 100 * hourHeight / 100);
+                        blank = new TextView(this);
+                        layoutMon.addView(blank, lForBlank);
+                        layoutMon.addView(table[i], l);
+                        start[0] = mtt.get(i).getEnd();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
+                    }
                     break;
-                case "Tue":
-                    lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            ((tt.get(i).getStart() - start[1]) / 100 * hourHeight) + (tt.get(i).getStart() - start[1]) % 100 * hourHeight / 100);
-                    blank = new TextView(this);
-                    layoutTue.addView(blank, lForBlank);
-                    layoutTue.addView(table[i], l);
-                    start[1] = tt.get(i).getEnd();
+                case "화":
+                    if(mtt.get(i).getStart() >=  start[1]) {
+                        lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                ((mtt.get(i).getStart() - start[1]) / 100 * hourHeight) + (mtt.get(i).getStart() - start[1]) % 100 * hourHeight / 100);
+                        blank = new TextView(this);
+                        layoutTue.addView(blank, lForBlank);
+                        layoutTue.addView(table[i], l);
+                        start[1] = mtt.get(i).getEnd();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
+                    }
                     break;
-                case "Wed":
-                    lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            ((tt.get(i).getStart() - start[2]) / 100 * hourHeight) + (tt.get(i).getStart() - start[2]) % 100 * hourHeight / 100);
-                    blank = new TextView(this);
-                    layoutWed.addView(blank, lForBlank);
-                    layoutWed.addView(table[i], l);
-                    start[2] = tt.get(i).getEnd();
+                case "수":
+                    if(mtt.get(i).getStart() >=  start[2]) {
+                        lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                ((mtt.get(i).getStart() - start[2]) / 100 * hourHeight) + (mtt.get(i).getStart() - start[2]) % 100 * hourHeight / 100);
+                        blank = new TextView(this);
+                        layoutWed.addView(blank, lForBlank);
+                        layoutWed.addView(table[i], l);
+                        start[2] = mtt.get(i).getEnd();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
+                    }
                     break;
-                case "Thu":
-                    lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            ((tt.get(i).getStart() - start[3]) / 100) * hourHeight + (tt.get(i).getStart() - start[3]) % 100 * hourHeight / 100);
-                    blank = new TextView(this);
-                    layoutThu.addView(blank, lForBlank);
-                    layoutThu.addView(table[i], l);
-                    start[3] = tt.get(i).getEnd();
+                case "목":
+                    if(mtt.get(i).getStart() >=  start[3]) {
+                        lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                ((mtt.get(i).getStart() - start[3]) / 100) * hourHeight + (mtt.get(i).getStart() - start[3]) % 100 * hourHeight / 100);
+                        blank = new TextView(this);
+                        layoutThu.addView(blank, lForBlank);
+                        layoutThu.addView(table[i], l);
+                        start[3] = mtt.get(i).getEnd();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
+                    }
                     break;
-                case "Fri":
-                    lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            ((tt.get(i).getStart() - start[4]) / 100 * hourHeight) + (tt.get(i).getStart() - start[4]) % 100 * hourHeight / 100);
-                    blank = new TextView(this);
-                    layoutFri.addView(blank, lForBlank);
-                    layoutFri.addView(table[i], l);
-                    start[4] = tt.get(i).getEnd();
+                case "금":
+                    if(mtt.get(i).getStart() >=  start[4]) {
+                        lForBlank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                ((mtt.get(i).getStart() - start[4]) / 100 * hourHeight) + (mtt.get(i).getStart() - start[4]) % 100 * hourHeight / 100);
+                        blank = new TextView(this);
+                        layoutFri.addView(blank, lForBlank);
+                        layoutFri.addView(table[i], l);
+                        start[4] = mtt.get(i).getEnd();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
         }
     }
-
-/*
-    public int dip2px(float dpValue) {
-        float scale = getContext().getResources().getDisplayMetrics().density;
-        return  (dpValue * scale + 0.5f);
-    }*/
-
 }

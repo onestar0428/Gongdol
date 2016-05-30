@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<TimeTable> tt = new ArrayList<TimeTable>(); // list for data from data
     TextView[] table;//textview array for subjects
     TextView[] time;
-    int latest = 1700; //initialize latest time
+    int latest = 0; //initialize latest time
     static int earliest = 800;
     int hourHeight;
 

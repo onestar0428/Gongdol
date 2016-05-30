@@ -23,7 +23,7 @@ public class ClassroomDB {
     static final String time = "Time";//강의시간
     static final String classroom = "Classroom";//강의실 호수
     static final String DATABASE_CREATE = "CREATE TABLE IF NOT EXISTS ClassroomInfo (_id INTEGER, Subject VARCHAR(20), Prof VARCHAR(10), Time VARCHAR(20), Classroom VARCHAR(20));";
-    static final int DATABASE_VERSION = 2;
+    static final int DATABASE_VERSION = 3;
 
     final Context context;
     DatabaseHelper DBHelper;
