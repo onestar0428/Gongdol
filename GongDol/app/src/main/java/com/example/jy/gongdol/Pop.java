@@ -1,12 +1,16 @@
 package com.example.jy.gongdol;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -15,12 +19,18 @@ import java.util.ArrayList;
 /**
  * Created by jy on 2016-05-21.
  */
-public class Pop extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class Pop extends AppCompatActivity {
     ClassroomDB db;
     Spinner spin1;
     Spinner spin2;
-    String[] subjects;
-    String[] details;
+    String[] subjects = new String[30];
+    String[] details = new String[30];
+    String selected = "";
+    int count_s = 0;
+    ArrayAdapter<String> list1;
+    ArrayAdapter<String> list2;
+    Button ok;
+    Button cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,55 +43,94 @@ public class Pop extends AppCompatActivity implements AdapterView.OnItemSelected
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int) (width*.10), (int) (height*.6));
+        ok = (Button) findViewById(R.id.ok_button);
+        cancel = (Button) findViewById(R.id.ok_cancel);
+
+        ok.setOnClickListener(new View.OnClickListener() {
+                                  @Override
+                                  public void onClick(View v) {
+                                      count_s=0;
+                                      Intent myLocalIntent = getIntent();
+                                      Bundle myBundle = myLocalIntent.getExtras();
+                                      myBundle.putString("selected", selected);
+                                      myLocalIntent.putExtras(myBundle);
+                                      setResult(Activity.RESULT_OK, myLocalIntent);
+                                      finish();
+                                  }
+                              }
+        );
+        cancel.setOnClickListener(new View.OnClickListener() {
+                                      @Override
+                                      public void onClick(View v) {
+                                          finish();
+                                      }
+                                  }
+        );
+
+        db = new ClassroomDB(this);
+        getWindow().setLayout((int) (width * .80), (int) (height * .4));
         initArray();
-        makespinner();
+        makeSpinner();
     }
 
-    public void initArray(){
-        db = new ClassroomDB(this);
+    public void initArray() {
         db.open();
         Cursor c = db.getAllClassrooms();
+        if(c.getCount()==0)
+            db.init();//
         if (c.moveToFirst()) {
-            int i=0;
             do {
-                subjects[i] = new String();
-                subjects[i] = c.getString(0);
-
-            } while (c.moveToNext());
-        }
-
-        if (c.moveToFirst()) {
-            int i=0;
-            do {
-               details[i] = new String();
-                String tmp = c.getString(1) +  c.getString(2) + c.getString(3) + c.getString(4);
-                details[i] = tmp;
+                subjects[count_s] = c.getString(1);
+                count_s++;
             } while (c.moveToNext());
         }
         db.close();
     }
-    public void makespinner(){
-        spin1 = (Spinner)findViewById(R.id.subject_spinner);
-        spin2 = (Spinner)findViewById(R.id.detail_spinner);
-        spin1.setOnItemSelectedListener(this);
-        spin2.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> list1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, subjects);
-        list1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    public void makeSpinner() {
+        spin1 = (Spinner) findViewById(R.id.subject_spinner);
+        spin2 = (Spinner) findViewById(R.id.detail_spinner);
+
+        list1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, subjects);
+        //list1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spin1.setAdapter(list1);
-        ArrayAdapter<String> list2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, details);
-        list2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin2.setAdapter(list2);
-    }
+        spin1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+                selected = subjects[position];
+                db.open();
+                Cursor c = db.getAllClassrooms();
+                if (c.moveToFirst()) {
+                    count_s = 0;
+                    do {
+                        if (c.getString(1).equals(subjects[position])) {
+                            details[count_s] = "&" + c.getString(2) + "&" + c.getString(3) + "&" + c.getString(4);
+                            count_s++;
+                        }
+                    } while (c.moveToNext());
+                }
+                db.close();
 
-    public void onItemSelected(AdapterView<?> parent, View v, int position, long id){
-        //Toast.makeText(this, subjects[position], Toast.LENGTH_SHORT).show();
-    }
+                list2 = new ArrayAdapter<String>(Pop.this, android.R.layout.simple_spinner_dropdown_item, details);
+                //list2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-    @Override
-    public void onNothingSelected(AdapterView<?> arg){
-        //t.setText("");
+                spin2.setAdapter(list2);
+                spin2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+                        selected += details[position];
+                    }
+
+                    public void onNothingSelected(AdapterView<?> arg0) {
+                    }
+                });
+                list2.notifyDataSetChanged();
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
     }
 
 }

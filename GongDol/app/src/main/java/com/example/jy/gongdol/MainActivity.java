@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (e.getEnd() > latest)
                 latest = e.getEnd() + 100;
         }
-        Log.w("TAG", latest+"");
     }
 
     //creating first row

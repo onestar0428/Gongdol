@@ -43,14 +43,12 @@ public class TimeTable {
 
             if (s.equals("A") || s.equals("B") || s.equals("C") || s.equals("D") || s.equals("E")) {
                 char c = s.charAt(0);
-                Log.w("C", c+"");
                 if (c > max_a)
                     max_a = c;
                 if (c < min_n)
                     min_a = c;
                 flag = 1;
             } else {
-                Log.w("CN", Integer.parseInt(s)  + "");
                 if (Integer.parseInt(s) > max_n)
                     max_n = Integer.parseInt(s);
                 if (Integer.parseInt(s) < min_n)
