@@ -213,6 +213,7 @@ public class mySchedule extends AppCompatActivity {
         String day = d[0].substring(0, 1);//월
 
         cur.setDay(day);
+        cur.setTime(arr[2]);
         Log.w("time", arr[2] +" "+ d[0] +" "+d[1]);
 
         //월1, 화2, 수3 형식일 때, 요일 별로 string 쪼개서 새 객체 생성한 뒤 저장
