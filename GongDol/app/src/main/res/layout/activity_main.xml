@@ -14,8 +14,7 @@
         android:text="my"
         android:textSize="9pt" />
 
-    <LinearLayout
-        android:id="@+id/fortable"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/stack"
@@ -36,96 +35,148 @@
 
         </LinearLayout>
 
-        <GridLayout
-            android:id="@+id/monday"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/forTimeWidth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/time"
+            android:background="#4979e9">
 
-            <TextView
+            <GridLayout
+                android:id="@+id/mon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#093483"
-                android:text="Mon"
-                android:textColor="#ffffff"
-                android:textSize="9pt"
-                android:textAlignment="center"
-                android:textStyle="bold" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        </GridLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#093483"
+                    android:text="Mon"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="9pt"
+                    android:textStyle="bold" />
 
-        <GridLayout
-            android:id="@+id/tuesday"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="vertical">
+            </GridLayout>
 
-            <TextView
+            <GridLayout
+                android:id="@+id/tue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#093483"
-                android:text="Tue"
-                android:textColor="#ffffff"
-                android:textSize="9pt"
-                android:textAlignment="center"
-                android:textStyle="bold" />
-        </GridLayout>
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <GridLayout
-            android:id="@+id/wednesday"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#093483"
+                    android:text="Tue"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="9pt"
+                    android:textStyle="bold" />
+            </GridLayout>
 
-            <TextView
+            <GridLayout
+                android:id="@+id/wed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#093483"
-                android:text="Wed"
-                android:textColor="#ffffff"
-                android:textSize="9pt"
-                android:textAlignment="center"
-                android:textStyle="bold" />
-        </GridLayout>
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <GridLayout
-            android:id="@+id/thursday"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#093483"
+                    android:text="Wed"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="9pt"
+                    android:textStyle="bold" />
+            </GridLayout>
 
-            <TextView
+            <GridLayout
+                android:id="@+id/thu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#093483"
-                android:text="Thu"
-                android:textColor="#ffffff"
-                android:textSize="9pt"
-                android:textAlignment="center"
-                android:textStyle="bold" />
-        </GridLayout>
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <GridLayout
-            android:id="@+id/friday"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#093483"
+                    android:text="Thu"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="9pt"
+                    android:textStyle="bold" />
+            </GridLayout>
 
-            <TextView
+            <GridLayout
+                android:id="@+id/fri"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#093483"
-                android:text="Fri"
-                android:textColor="#ffffff"
-                android:textSize="9pt"
-                android:textAlignment="center"
-                android:textStyle="bold" />
-        </GridLayout>
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#093483"
+                    android:text="Fri"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="9pt"
+                    android:textStyle="bold" />
+            </GridLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/forTimeWidth"
+            android:layout_toRightOf="@+id/time"
+            android:background="#4979e9">
+
+            <GridLayout
+                android:id="@+id/monday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"></GridLayout>
+
+            <GridLayout
+                android:id="@+id/tuesday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"></GridLayout>
+
+            <GridLayout
+                android:id="@+id/wednesday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"></GridLayout>
+
+            <GridLayout
+                android:id="@+id/thursday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"></GridLayout>
+
+            <GridLayout
+                android:id="@+id/friday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"></GridLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

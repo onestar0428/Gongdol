@@ -23,9 +23,10 @@ public class Pop extends AppCompatActivity {
     ClassroomDB db;
     Spinner spin1;
     Spinner spin2;
-    String[] subjects = new String[30];
-    String[] details = new String[30];
-    String selected = "";
+    ArrayList<String> subjects = new ArrayList<String>();
+    ArrayList<String> details = new ArrayList<String>();
+    String[] select = new String[10];
+    String selected="";
     int count_s = 0;
     ArrayAdapter<String> list1;
     ArrayAdapter<String> list2;
@@ -49,7 +50,7 @@ public class Pop extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
                                   @Override
                                   public void onClick(View v) {
-                                      count_s=0;
+                                      count_s = 0;
                                       Intent myLocalIntent = getIntent();
                                       Bundle myBundle = myLocalIntent.getExtras();
                                       myBundle.putString("selected", selected);
@@ -75,13 +76,24 @@ public class Pop extends AppCompatActivity {
 
     public void initArray() {
         db.open();
-        Cursor c = db.getAllClassrooms();
-        if(c.getCount()==0)
-            db.init();//
+        Cursor c = db.getAllClassroom();
+        int flag = 0;
+        String s="";
+
+        //if(c.getCount()==0)
+        //db.init();//
         if (c.moveToFirst()) {
             do {
-                subjects[count_s] = c.getString(1);
-                count_s++;
+                for (int i = 0; i < subjects.size(); i++) {//check if this subject is already existed in array
+                    if (c.getString(c.getColumnIndex("subject")).equals(subjects.get(i))) {
+                        flag = 1;
+                    }
+                }
+                if (flag == 0) {
+                    subjects.add(c.getString(c.getColumnIndex("subject")));
+                    //count_s++;
+                }
+                flag=0;
             } while (c.moveToNext());
         }
         db.close();
@@ -98,14 +110,17 @@ public class Pop extends AppCompatActivity {
         spin1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
-                selected = subjects[position];
+                count_s=0;
+                details.clear();
                 db.open();
-                Cursor c = db.getAllClassrooms();
+                Cursor c = db.getAllClassroom();
                 if (c.moveToFirst()) {
-                    count_s = 0;
                     do {
-                        if (c.getString(1).equals(subjects[position])) {
-                            details[count_s] = "&" + c.getString(2) + "&" + c.getString(3) + "&" + c.getString(4);
+                        if (c.getString(c.getColumnIndex("subject")).equals(subjects.get(position))) {
+                            details.add(c.getString(c.getColumnIndex("time")) + "(" + c.getString(c.getColumnIndex("prof")) + ")");
+                            select[count_s] = c.getString(c.getColumnIndex("subject")) + "&" + c.getString(c.getColumnIndex("prof")) + "&" + c.getString(c.getColumnIndex("time")) + "&"
+                                    + c.getString(c.getColumnIndex("building")) + "&" + c.getString(c.getColumnIndex("classroom")) + "&"
+                                    + c.getString(c.getColumnIndex("sid"));
                             count_s++;
                         }
                     } while (c.moveToNext());
@@ -119,7 +134,7 @@ public class Pop extends AppCompatActivity {
                 spin2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
-                        selected += details[position];
+                        selected = select[position];
                     }
 
                     public void onNothingSelected(AdapterView<?> arg0) {

@@ -17,6 +17,7 @@ public class TimeTable {
     String building="";
     int start=800;
     int end=800;
+    int draw_flag=0;
 
     int classTime_num[][] = {{900, 950}, {1000, 1050}, {1100, 1150}, {1200, 1250}, {1300, 1350}, {1400, 1450}, {1500, 1550},
             {1600, 1650}, {1700, 1750}, {1800, 1850}, {1900, 1950}, {2000, 2150}, {2100, 2150}, {2200, 2250}};//[교시][시작, 끝]
@@ -28,7 +29,7 @@ public class TimeTable {
         time = " ";
         prof = "";
         classroom = " ";
-
+        draw_flag=0;
     }
 
     //parsing time and classroom information
@@ -152,11 +153,10 @@ public class TimeTable {
     public void setStart(int s) {
         start = (s/100*100) + (s%100 * 100 / 60);
     }
-
     public void setEnd(int e) {
         end = (e/100*100) + (e%100 * 100 / 60);
     }
-
+    public void setDraw(int d){draw_flag = d;}
     //getter
 
     public int getCourseID(){return courseID;}
@@ -184,4 +184,5 @@ public class TimeTable {
         return end;
     }
 
+    public int getDraw(){return draw_flag;}
 }

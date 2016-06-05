@@ -48,6 +48,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         layoutFri = (GridLayout) findViewById(R.id.friday);
 
         db = new ClassroomDB(this);
+        db.open();
+        Cursor c = db.getAllClassroom();
+        if(c.getCount()==0) {
+            long id = db.insertContact("06480001", "데이터마이닝 (원어강의)", "정옥란", "금A ,금B", "IT대학", "412");
+            id = db.insertContact("10176001", "컴퓨터그래픽스 (원어강의)", "최진우", "화4 ,화5 ,화6 ,화7", "IT대학", "304");
+            id = db.insertContact("10176002", "컴퓨터그래픽스 (원어강의)", "최진우", "목4 ,목5 ,목6 ,목7", "IT대학", "304");
+            id = db.insertContact("10177001", "소프트웨어공학 (원어강의)", "최아영", "금A ,금B", "IT대학", "304");
+            id = db.insertContact("10178001", "모바일프로그래밍 (원어강의)", "최재혁", "월3 ,월4 ,수2 ,수3", "IT대학", "412");
+            id = db.insertContact("10178002", "모바일프로그래밍 (원어강의)", "최재혁", "월5 ,월6 ,수5 ,수6", "IT대학", "412");
+        }
+        db.close();
+
         initArrayList();
         setFirstRow();
     }
@@ -67,16 +79,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Temporary class for inputting tables
     public void initArrayList() {
         db.open();
-        db.init();
-        Cursor c = db.getAllClassrooms();
+        Cursor c = db.getAllClassroom();
         if (c.moveToFirst()) {
             do {
                 TimeTable t = new TimeTable();
-                t.setCourseId(c.getInt(0));
-                t.setSubject(c.getString(1));
-                t.setProf(c.getString(2));
-                t.setTime(c.getString(3));
-                t.setClassroom(c.getString(4));
+                t.setCourseId(Integer.parseInt(c.getString(1)));
+                t.setSubject(c.getString(2));
+                t.setProf(c.getString(3));
+                t.setTime(c.getString(4));
+                t.setClassroom(c.getString(5)+"-"+c.getString(6));
                 checkingDate(t, c);
                 tt.add(t);
 
@@ -85,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         checkLatestTime();
         //display arraylist values
-        for(TimeTable e: tt){
+        for (TimeTable e : tt) {
             Log.w("TT", e.getSubject() + " " + e.getStart() + " " + e.getEnd() + " " + e.getDay() + " ");
         }
         db.close();
