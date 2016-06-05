@@ -244,7 +244,7 @@ public class mySchedule extends AppCompatActivity {
         Comparator<TimeTable> comp = new Comparator<TimeTable>() {
             @Override
             public int compare(TimeTable t1, TimeTable t2) {
-                return (t1.getStart()) > (t2.getStart()) ? 1 : -1;
+                return (t1.getStart()) >= (t2.getStart()) ? 1 : -1;
             }
 
         };
@@ -278,15 +278,16 @@ public class mySchedule extends AppCompatActivity {
         Iterator<TextView> it = table.iterator();
         Iterator<TimeTable> iterator = mtt.iterator();
 
+        layoutMon.removeAllViews();
+        layoutTue.removeAllViews();
+        layoutWed.removeAllViews();
+        layoutThu.removeAllViews();
+        layoutFri.removeAllViews();
+
         //remove all textViews
         while (it.hasNext()) {
             TextView root = it.next();
             if (table.contains(root)) {
-                layoutMon.removeAllViews();
-                layoutTue.removeAllViews();
-                layoutWed.removeAllViews();
-                layoutThu.removeAllViews();
-                layoutFri.removeAllViews();
                 it.remove();
             }
         }
@@ -329,7 +330,6 @@ public class mySchedule extends AppCompatActivity {
                         startActivityForResult(mIntent, 102);
                     }
                 });
-                table.add(tempTable);
 
                 int hour = ((t.getEnd() - t.getStart())) / 100 * hourHeight;
                 int minute = ((t.getEnd() - t.getStart())) % 100 * hourHeight / 100;
@@ -346,8 +346,10 @@ public class mySchedule extends AppCompatActivity {
                             layoutMon.addView(tempTable, l);
                             start[0] = t.getEnd();
                             t.setDraw(1);
+                            table.add(tempTable);
                         } else {
                             Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
+                            iterator.remove();
                         }
                         break;
                     case "화":
@@ -359,8 +361,10 @@ public class mySchedule extends AppCompatActivity {
                             layoutTue.addView(tempTable, l);
                             start[1] = t.getEnd();
                             t.setDraw(1);
+                            table.add(tempTable);
                         } else {
                             Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
+                            iterator.remove();
                         }
                         break;
                     case "수":
@@ -372,8 +376,10 @@ public class mySchedule extends AppCompatActivity {
                             layoutWed.addView(tempTable, l);
                             start[2] = t.getEnd();
                             t.setDraw(1);
+                            table.add(tempTable);
                         } else {
                             Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
+                            iterator.remove();
                         }
                         break;
                     case "목":
@@ -385,8 +391,10 @@ public class mySchedule extends AppCompatActivity {
                             layoutThu.addView(tempTable, l);
                             start[3] = t.getEnd();
                             t.setDraw(1);
+                            table.add(tempTable);
                         } else {
                             Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
+                            iterator.remove();
                         }
                         break;
                     case "금":
@@ -398,8 +406,10 @@ public class mySchedule extends AppCompatActivity {
                             layoutFri.addView(tempTable, l);
                             start[4] = t.getEnd();
                             t.setDraw(1);
+                            table.add(tempTable);
                         } else {
                             Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
+                            iterator.remove();
                         }
                         break;
                 }
