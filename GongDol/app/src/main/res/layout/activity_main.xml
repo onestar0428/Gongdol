@@ -5,19 +5,38 @@
     android:layout_height="match_parent"
     tools:context="com.example.jy.gongdol.MainActivity">
 
-    <Button
-        android:id="@+id/stack"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/spinners"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_margin="2dp"
-        android:text="my"
-        android:textSize="9pt" />
+        android:textSize="9pt">
+
+        <Spinner
+            android:id="@+id/building_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"></Spinner>
+
+        <Spinner
+            android:id="@+id/room_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"></Spinner>
+
+        <Button
+            android:id="@+id/makeOK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ok"></Button>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/stack"
+        android:layout_below="@id/spinners"
         android:background="#4979e9">
 
         <LinearLayout
@@ -26,13 +45,6 @@
             android:layout_height="match_parent"
             android:background="#093483"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="   "
-                android:textSize="9pt" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -178,5 +190,6 @@
                 android:layout_weight="1"
                 android:orientation="vertical"></GridLayout>
         </LinearLayout>
+
     </RelativeLayout>
 </RelativeLayout>
