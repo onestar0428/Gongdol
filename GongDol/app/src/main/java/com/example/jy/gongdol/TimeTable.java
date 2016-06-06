@@ -1,6 +1,7 @@
 package com.example.jy.gongdol;
 
 import android.util.Log;
+import android.widget.TextView;
 
 /**
  * Created by jy on 2016-05-03.
@@ -11,6 +12,7 @@ public class TimeTable {
     String prof;
     String time;
     String classroom;
+    TextView tv;
 
     String day="";
     String room="";
@@ -30,6 +32,7 @@ public class TimeTable {
         prof = "";
         classroom = " ";
         draw_flag=0;
+        tv = null;
     }
 
     //parsing time and classroom information
@@ -121,6 +124,10 @@ public class TimeTable {
     }
 
     //setter
+    public void setTextView(TextView t) {
+        tv = t;
+    }
+
     public void setCourseId(int id) {
         courseID = id;
     }
@@ -161,7 +168,7 @@ public class TimeTable {
     }
     public void setDraw(int d){draw_flag = d;}
     //getter
-
+    public TextView getTextView(){return tv;}
     public int getCourseID(){return courseID;}
     public String getSubject() {
         return subject;

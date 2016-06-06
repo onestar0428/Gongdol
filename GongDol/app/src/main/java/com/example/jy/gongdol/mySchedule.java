@@ -25,7 +25,6 @@ public class mySchedule extends AppCompatActivity {
     ClassroomDB db;
 
     ArrayList<TimeTable> mtt = new ArrayList<TimeTable>(); // list for data from data
-    ArrayList<TextView> table = new ArrayList<TextView>();//textview array for subjects
     TextView[] time;
     Typeface tf1;
     int latest = 1700; //initialize latest time
@@ -94,55 +93,50 @@ public class mySchedule extends AppCompatActivity {
         //handling activity result for deleting table
         if ((requestCode == 102) && (resultCode == Activity.RESULT_OK)) {
             Bundle myResults = data.getExtras();
-            long id = myResults.getLong("table");
-            Iterator<TextView> iterator = table.iterator();
+            int id = myResults.getInt("table2");
+            Iterator<TimeTable> iterator = mtt.iterator();
+            String s = "";
 
-            while (iterator.hasNext()) {
-                TextView t = iterator.next();
-                if (t.getId() == id) {
-                    //t.setVisibility(View.GONE);
-                    String[] s = (t.getText().toString()).split("\n");//get subject name
-
-                    Iterator<TimeTable> iterator_mtt = mtt.iterator();
-                    while (iterator_mtt.hasNext()) {//for array mtt
-                        TimeTable tt = iterator_mtt.next();
-
-                        //Toast.makeText(getApplicationContext(), tt.getSubject() + " " + s[0] + " " + tt.getDay(), Toast.LENGTH_SHORT).show();
-                        if (tt.getSubject().equals(s[0]) && tt.getDraw() == 1) {//intent result로 받은 값이 그려진 테이블의 과목과 일치하면 지운다
-                            switch (tt.getDay()) {
-                                case "월":
-                                    layoutMon.removeView(t);
-                                    start[0] = earliest;
-                                    break;
-                                case "화":
-                                    layoutTue.removeView(t);
-                                    //deleteTable(tt);
-                                    start[1] = earliest;
-                                    break;
-                                case "수":
-                                    layoutWed.removeView(t);
-                                    //deleteTable(tt);
-                                    start[2] = earliest;
-                                    break;
-                                case "목":
-                                    layoutThu.removeView(t);
-                                    //deleteTable(tt);
-                                    start[3] = earliest;
-                                    break;
-                                case "금":
-                                    layoutFri.removeView(t);
-                                    //deleteTable(tt);
-                                    start[4] = earliest;
-                                    break;
-                            }
-                            iterator_mtt.remove();
-                        }
+            while (iterator.hasNext()) {//for array mtt
+                TimeTable tt = iterator.next();
+                //Toast.makeText(getApplicationContext(), tt.getSubject() + " " + s + " " + tt.getDay(), Toast.LENGTH_SHORT).show();
+                if (tt.getCourseID()==id) {//intent result로 받은 값이 그려진 테이블의 과목과 일치하면 지운다
+                    switch (tt.getDay()) {
+                        case "월":
+                            layoutMon.removeView(tt.getTextView());
+                            start[0] = earliest;
+                            break;
+                        case "화":
+                            layoutTue.removeView(tt.getTextView());
+                            //deleteTable(tt);
+                            start[1] = earliest;
+                            break;
+                        case "수":
+                            layoutWed.removeView(tt.getTextView());
+                            //deleteTable(tt);
+                            start[2] = earliest;
+                            break;
+                        case "목":
+                            layoutThu.removeView(tt.getTextView());
+                            //deleteTable(tt);
+                            start[3] = earliest;
+                            break;
+                        case "금":
+                            layoutFri.removeView(tt.getTextView());
+                            //deleteTable(tt);
+                            start[4] = earliest;
+                            break;
                     }
+                    iterator.remove();
+                }
+            }
+            makeTable();
+                    /*
                     //remove all tables that has same subject
                     while (iterator.hasNext()) {
                         TextView root = iterator.next();
                         String temp[] = root.getText().toString().split("\n");
-                        if (temp[0].equals(s[0]) && table.contains(root)) {
+                        if (temp[0].equals(s[0])) {
                             layoutMon.removeView(root);
                             layoutTue.removeView(root);
                             layoutWed.removeView(root);
@@ -151,14 +145,11 @@ public class mySchedule extends AppCompatActivity {
                             iterator.remove();
                             Log.d("remove : ", s[0]);
                         }
-                    }
-                }
-            }
-            makeTable();
+                    }*/
         }
-        // } catch (Exception e) {
-        //    Log.e("d", e+"");
-        //  }
+// } catch (Exception e) {
+//    Log.e("d", e+"");
+//  }
     }//onActivityResult
 
     //setting font
@@ -214,7 +205,7 @@ public class mySchedule extends AppCompatActivity {
 
         cur.setDay(day);
         cur.setTime(arr[2]);
-        Log.w("time", arr[2] +" "+ d[0] +" "+d[1]);
+        Log.w("time", arr[2] + " " + d[0] + " " + d[1]);
 
         //월1, 화2, 수3 형식일 때, 요일 별로 string 쪼개서 새 객체 생성한 뒤 저장
         for (int i = 0; i < d.length; i++) {
@@ -223,6 +214,7 @@ public class mySchedule extends AppCompatActivity {
 
                 day = d[i].substring(0, 1);
                 TimeTable new_t = new TimeTable();
+                new_t.setCourseId(cur.getCourseID());
                 new_t.setSubject(cur.getSubject());
                 new_t.setProf(cur.getProf());
                 new_t.setClassroom(cur.getClassroom());
@@ -246,7 +238,6 @@ public class mySchedule extends AppCompatActivity {
             public int compare(TimeTable t1, TimeTable t2) {
                 return (t1.getStart()) >= (t2.getStart()) ? 1 : -1;
             }
-
         };
         Collections.sort(mtt, comp);
     }
@@ -274,8 +265,7 @@ public class mySchedule extends AppCompatActivity {
         }
     }
 
-    public void initTable(){
-        Iterator<TextView> it = table.iterator();
+    public void initTable() {
         Iterator<TimeTable> iterator = mtt.iterator();
 
         layoutMon.removeAllViews();
@@ -285,12 +275,6 @@ public class mySchedule extends AppCompatActivity {
         layoutFri.removeAllViews();
 
         //remove all textViews
-        while (it.hasNext()) {
-            TextView root = it.next();
-            if (table.contains(root)) {
-                it.remove();
-            }
-        }
 
         while (iterator.hasNext()) {
             TimeTable t = iterator.next();
@@ -302,6 +286,7 @@ public class mySchedule extends AppCompatActivity {
         start[3] = earliest;
         start[4] = earliest;
     }
+
     //fill the timetable for calculating location and height of each subject
     public void makeTable() {
         //hourHeight = time[0].getHeight()/((latest - earliest)/100 + 1);
@@ -320,12 +305,13 @@ public class mySchedule extends AppCompatActivity {
                 tempTable = new TextView(this);
                 tempTable.setText(t.getSubject() + "\n" + t.getClassroom());
                 tempTable.setBackgroundColor(Color.WHITE);
+                tempTable.setId(t.getCourseID());
                 tempTable.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent mIntent = new Intent(mySchedule.this, Pop2.class);
                         Bundle b = new Bundle();
-                        b.putLong("table", v.getId());
+                        b.putInt("table", v.getId());
                         mIntent.putExtras(b);
                         startActivityForResult(mIntent, 102);
                     }
@@ -346,7 +332,7 @@ public class mySchedule extends AppCompatActivity {
                             layoutMon.addView(tempTable, l);
                             start[0] = t.getEnd();
                             t.setDraw(1);
-                            table.add(tempTable);
+                            t.setTextView(tempTable);
                         } else {
                             Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
                             iterator.remove();
@@ -361,7 +347,7 @@ public class mySchedule extends AppCompatActivity {
                             layoutTue.addView(tempTable, l);
                             start[1] = t.getEnd();
                             t.setDraw(1);
-                            table.add(tempTable);
+                            t.setTextView(tempTable);
                         } else {
                             Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
                             iterator.remove();
@@ -376,7 +362,7 @@ public class mySchedule extends AppCompatActivity {
                             layoutWed.addView(tempTable, l);
                             start[2] = t.getEnd();
                             t.setDraw(1);
-                            table.add(tempTable);
+                            t.setTextView(tempTable);
                         } else {
                             Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
                             iterator.remove();
@@ -391,7 +377,7 @@ public class mySchedule extends AppCompatActivity {
                             layoutThu.addView(tempTable, l);
                             start[3] = t.getEnd();
                             t.setDraw(1);
-                            table.add(tempTable);
+                            t.setTextView(tempTable);
                         } else {
                             Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
                             iterator.remove();
@@ -406,7 +392,7 @@ public class mySchedule extends AppCompatActivity {
                             layoutFri.addView(tempTable, l);
                             start[4] = t.getEnd();
                             t.setDraw(1);
-                            table.add(tempTable);
+                            t.setTextView(tempTable);
                         } else {
                             Toast.makeText(getApplicationContext(), "Duplicate time!", Toast.LENGTH_SHORT).show();
                             iterator.remove();
