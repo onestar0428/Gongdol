@@ -1,7 +1,5 @@
 package com.example.jy.gongdol;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -67,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                                   @Override
                                   public void onClick(View v) {
                                       String result = select[0] + "-" + select[1];
-                                      initArrayList(result);
+                                      initArrayList(result, tt);
                                       setFirstRow();
                                       makeTable();
                                   }
@@ -192,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Temporary class for inputting tables
-    public void initArrayList(String info) {
+    public ArrayList<TimeTable> initArrayList(String info, ArrayList<TimeTable> tt) {
         tt.clear();
         db.open();
         Cursor c = db.getAllClassroom();
@@ -219,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
             Log.w("TT", e.getSubject() + " " + e.getStart() + " " + e.getEnd() + " " + e.getDay() + " ");
         }*/
         arraySort();
+        return tt;
     }
 
     public void checkingDate(TimeTable cur, Cursor cur_c) {

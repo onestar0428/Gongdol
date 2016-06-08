@@ -5,19 +5,34 @@
     android:layout_height="match_parent"
     tools:context="com.example.jy.gongdol.mySchedule">
 
-    <Button
-        android:id="@+id/stack"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/l"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_margin="2dp"
-        android:text="my"
-        android:textSize="9pt" />
+        android:gravity="right">
+
+        <Button
+            android:id="@+id/compare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_toLeftOf="@+id/stack"
+            android:text="show"
+            android:textSize="9pt" />
+
+        <Button
+            android:id="@+id/stack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:text="my"
+            android:textSize="9pt" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/stack"
+        android:layout_below="@+id/l"
         android:background="#4979e9">
 
         <LinearLayout
@@ -25,158 +40,156 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="#093483"
-            android:orientation="vertical">
+            android:orientation="vertical"></LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="   "
-                android:textSize="9pt" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/forTimeWidth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/time"
-            android:background="#4979e9">
-
-            <GridLayout
-                android:id="@+id/mon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#093483"
-                    android:text="Mon"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="9pt"
-                    android:textStyle="bold" />
-
-            </GridLayout>
-
-            <GridLayout
-                android:id="@+id/tue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#093483"
-                    android:text="Tue"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="9pt"
-                    android:textStyle="bold" />
-            </GridLayout>
-
-            <GridLayout
-                android:id="@+id/wed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#093483"
-                    android:text="Wed"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="9pt"
-                    android:textStyle="bold" />
-            </GridLayout>
-
-            <GridLayout
-                android:id="@+id/thu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#093483"
-                    android:text="Thu"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="9pt"
-                    android:textStyle="bold" />
-            </GridLayout>
-
-            <GridLayout
-                android:id="@+id/fri"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#093483"
-                    android:text="Fri"
-                    android:textAlignment="center"
-                    android:textColor="#ffffff"
-                    android:textSize="9pt"
-                    android:textStyle="bold" />
-            </GridLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/table"
+        <RelativeLayout
+            android:id="@+id/base"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/forTimeWidth"
             android:layout_toRightOf="@+id/time"
             android:background="#4979e9">
 
-            <GridLayout
-                android:id="@+id/monday"
+            <LinearLayout
+                android:id="@+id/forTimeWidth"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"></GridLayout>
+                android:layout_height="wrap_content"
+                android:background="#4979e9">
 
-            <GridLayout
-                android:id="@+id/tuesday"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"></GridLayout>
+                <GridLayout
+                    android:id="@+id/mon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-            <GridLayout
-                android:id="@+id/wednesday"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"></GridLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#093483"
+                        android:text="Mon"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="9pt"
+                        android:textStyle="bold" />
 
-            <GridLayout
-                android:id="@+id/thursday"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"></GridLayout>
+                </GridLayout>
 
-            <GridLayout
-                android:id="@+id/friday"
+                <GridLayout
+                    android:id="@+id/tue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#093483"
+                        android:text="Tue"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="9pt"
+                        android:textStyle="bold" />
+                </GridLayout>
+
+                <GridLayout
+                    android:id="@+id/wed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#093483"
+                        android:text="Wed"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="9pt"
+                        android:textStyle="bold" />
+                </GridLayout>
+
+                <GridLayout
+                    android:id="@+id/thu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#093483"
+                        android:text="Thu"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="9pt"
+                        android:textStyle="bold" />
+                </GridLayout>
+
+                <GridLayout
+                    android:id="@+id/fri"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#093483"
+                        android:text="Fri"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="9pt"
+                        android:textStyle="bold" />
+                </GridLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/table"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"></GridLayout>
-        </LinearLayout>
+                android:layout_below="@+id/forTimeWidth"
+                android:background="#4979e9">
+
+                <GridLayout
+                    android:id="@+id/monday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"></GridLayout>
+
+                <GridLayout
+                    android:id="@+id/tuesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"></GridLayout>
+
+                <GridLayout
+                    android:id="@+id/wednesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"></GridLayout>
+
+                <GridLayout
+                    android:id="@+id/thursday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"></GridLayout>
+
+                <GridLayout
+                    android:id="@+id/friday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"></GridLayout>
+            </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

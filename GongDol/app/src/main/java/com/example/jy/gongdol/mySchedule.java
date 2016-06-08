@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ public class mySchedule extends AppCompatActivity {
     int latest = 1700; //initialize latest time
     int[] start = {earliest, earliest, earliest, earliest, earliest};
     static int earliest = 800;
-    int hourHeight, timeWidth;
+    int hourHeight, timeWidth, timeHeight;
 
     LinearLayout.LayoutParams l;
     LinearLayout linearForTime, forTimeWidth;
@@ -53,6 +54,8 @@ public class mySchedule extends AppCompatActivity {
         layoutThu = (GridLayout) findViewById(R.id.thursday);
         layoutFri = (GridLayout) findViewById(R.id.friday);
 
+        setFirstRow();
+
         db = new ClassroomDB(this);
         db.open();
         Cursor c = db.getAllClassroom();
@@ -68,8 +71,21 @@ public class mySchedule extends AppCompatActivity {
 
         setFirstRow();
 
-        Button b = (Button) findViewById(R.id.stack);
-        b.setOnClickListener(new View.OnClickListener() {
+        Button b1 = (Button) findViewById(R.id.compare);
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mySchedule.this, CompareWithMySchedule.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Bundle myData = new Bundle();
+                intent.putExtras(myData);
+                startActivityForResult(intent, 103);
+
+            }
+        });
+
+        Button b2 = (Button) findViewById(R.id.stack);
+        b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntentA1A2 = new Intent(mySchedule.this, Pop.class);
@@ -95,12 +111,11 @@ public class mySchedule extends AppCompatActivity {
             Bundle myResults = data.getExtras();
             int id = myResults.getInt("table2");
             Iterator<TimeTable> iterator = mtt.iterator();
-            String s = "";
 
             while (iterator.hasNext()) {//for array mtt
                 TimeTable tt = iterator.next();
                 //Toast.makeText(getApplicationContext(), tt.getSubject() + " " + s + " " + tt.getDay(), Toast.LENGTH_SHORT).show();
-                if (tt.getCourseID()==id) {//intent result로 받은 값이 그려진 테이블의 과목과 일치하면 지운다
+                if (tt.getCourseID() == id) {//intent result로 받은 값이 그려진 테이블의 과목과 일치하면 지운다
                     switch (tt.getDay()) {
                         case "월":
                             layoutMon.removeView(tt.getTextView());
@@ -131,21 +146,10 @@ public class mySchedule extends AppCompatActivity {
                 }
             }
             makeTable();
-                    /*
-                    //remove all tables that has same subject
-                    while (iterator.hasNext()) {
-                        TextView root = iterator.next();
-                        String temp[] = root.getText().toString().split("\n");
-                        if (temp[0].equals(s[0])) {
-                            layoutMon.removeView(root);
-                            layoutTue.removeView(root);
-                            layoutWed.removeView(root);
-                            layoutThu.removeView(root);
-                            layoutFri.removeView(root);
-                            iterator.remove();
-                            Log.d("remove : ", s[0]);
-                        }
-                    }*/
+        }
+
+        if ((requestCode == 103) && (resultCode == Activity.RESULT_OK)) {
+
         }
 // } catch (Exception e) {
 //    Log.e("d", e+"");
@@ -173,6 +177,7 @@ public class mySchedule extends AppCompatActivity {
         hourHeight = (linearForTime.getMeasuredHeight()) / time.length;
         hourHeight = time[0].getMeasuredHeight();
         timeWidth = forTimeWidth.getMeasuredWidth() / 5;
+        timeHeight = forTimeWidth.getMeasuredHeight();
         //Log.w("width", timeWidth + "");
 
         //Toast.makeText(getApplicationContext(), hourHeight + " " + linearForTime.getMeasuredHeight() + " " + time[0].getMeasuredHeight(), Toast.LENGTH_SHORT).show();
@@ -189,7 +194,7 @@ public class mySchedule extends AppCompatActivity {
         t.setRoom(arr[4]);
         t.setClassroom(arr[3] + "-" + arr[4]);
         t.setCourseId(Integer.parseInt(arr[5]));
-        checkingDate(arr, t);
+        checkingDate(arr[2], t);
         mtt.add(t);
 
         checkLatestTime();
@@ -198,14 +203,13 @@ public class mySchedule extends AppCompatActivity {
         makeTable();
     }
 
-    public void checkingDate(String[] arr, TimeTable cur) {
-        String d[] = arr[2].split(" ,");//월1/화2/수3으로 분리
+    public void checkingDate(String arr, TimeTable cur) {
+        String d[] = arr.split(" ,");//월1/화2/수3으로 분리
         String date = d[0];//월1
         String day = d[0].substring(0, 1);//월
 
         cur.setDay(day);
-        cur.setTime(arr[2]);
-        Log.w("time", arr[2] + " " + d[0] + " " + d[1]);
+        cur.setTime(arr);
 
         //월1, 화2, 수3 형식일 때, 요일 별로 string 쪼개서 새 객체 생성한 뒤 저장
         for (int i = 0; i < d.length; i++) {
@@ -220,8 +224,8 @@ public class mySchedule extends AppCompatActivity {
                 new_t.setClassroom(cur.getClassroom());
 
                 new_t.setDay(day);
-                new_t.setTime(arr[2].substring(arr[2].indexOf(day), arr[2].length()));
-                date = arr[2].substring(arr[2].indexOf(day), arr[2].length());
+                new_t.setTime(arr.substring(arr.indexOf(day), arr.length()));
+                date = arr.substring(arr.indexOf(day), arr.length());
                 //checkingDate(date.split(" ,"), new_t);
                 mtt.add(new_t);
 
@@ -232,7 +236,7 @@ public class mySchedule extends AppCompatActivity {
     }
 
     //sorting arraylist in order of starting time
-    public void arraySort() {
+    public void arraySort(ArrayList<TimeTable> mtt) {
         Comparator<TimeTable> comp = new Comparator<TimeTable>() {
             @Override
             public int compare(TimeTable t1, TimeTable t2) {
@@ -254,8 +258,14 @@ public class mySchedule extends AppCompatActivity {
 
     //creating first row
     public void setFirstRow() {
+        linearForTime.removeAllViews();
         time = new TextView[(latest - earliest) / 100 + 1];
         l = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, hourHeight, 1);
+
+        TextView temp = new TextView(this);
+        temp.setText("");
+        LinearLayout.LayoutParams l_blank = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, timeHeight, 1);
+        linearForTime.addView(temp, l_blank);
 
         for (int i = 0; i < time.length; i++) {
             time[i] = new TextView(this);
@@ -297,7 +307,7 @@ public class mySchedule extends AppCompatActivity {
 
         initTable();
         if (mtt.size() > 1)
-            arraySort();
+            arraySort(mtt);
 
         while (iterator.hasNext()) {
             TimeTable t = iterator.next();
@@ -401,5 +411,9 @@ public class mySchedule extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public void compareSchedule() {
+
     }
 }

@@ -152,8 +152,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/forTimeWidth"
-            android:layout_toRightOf="@+id/time"
-            android:background="#4979e9">
+            android:layout_toRightOf="@+id/time">
 
             <GridLayout
                 android:id="@+id/monday"
