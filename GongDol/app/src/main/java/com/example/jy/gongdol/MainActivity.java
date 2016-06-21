@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                                   public void onClick(View v) {
                                       String result = select[0] + "-" + select[1];
                                       initArrayList(result, tt);
-                                      setFirstRow();
+                                      //setFirstRow();
                                       makeTable();
                                   }
                               }

@@ -320,8 +320,8 @@ public class CompareWithMySchedule extends AppCompatActivity {
             TimeTable t = iterator.next();
             if (t.getDraw() == 0) {
                 tempTable = new TextView(this);
-                tempTable.setText(t.getSubject() + "\n" + t.getClassroom());
-                tempTable.setBackgroundColor(Color.argb(227, 173, 209, 245));
+                //tempTable.setText(t.getSubject() + "\n" + t.getClassroom());
+                tempTable.setBackgroundColor(Color.argb(100, 173, 209, 245));
                 tempTable.setId(t.getCourseID());
 
                 int hour = ((t.getEnd() - t.getStart())) / 100 * hourHeight;

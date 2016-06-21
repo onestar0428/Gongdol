@@ -258,7 +258,7 @@ public class mySchedule extends AppCompatActivity {
 
     //creating first row
     public void setFirstRow() {
-        linearForTime.removeAllViews();
+        linearForTime.removeAllViews();;
         time = new TextView[(latest - earliest) / 100 + 1];
         l = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, hourHeight, 1);
 
